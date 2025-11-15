@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paati's Pantry - Organic Health Mix & Snacks</title>
+    <link rel="icon" href="logo.jpg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="logo.jpg" alt="Paati's Pantry Logo" class="logo">
+                <h1>Paati's Pantry</h1>
+            </div>
+            <p class="tagline">AS PURE AS GRANNY'S TOUCH</p>
+            <div class="cart-icon-container">
+                <button class="cart-btn" onclick="toggleCart()">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>"Good Food is Good Mood!!!"</h2>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <h2>Our Products</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <img src="about.jpg" alt="About Paati's Pantry" class="about-image">
+                <p>Welcome to Paati's Pantry, where we bring you the purest organic health mixes and snacks, made with love and care, just like grandma used to make!</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <img src="contact.jpg" alt="Contact Paati's Pantry" class="contact-image">
+                <div class="contact-info">
+                    <a href="https://www.instagram.com/paatis_pantry/" target="_blank" class="social-link">
+                        <img src="Instagram_icon.png" alt="Instagram" class="social-icon">
+                        Instagram
+                    </a>
+                    <a href="https://wa.me/917904767339" target="_blank" class="social-link">
+                        <img src="whatsapp-icon-free-png.webp" alt="WhatsApp" class="social-icon">
+                        +91 7904767339
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cart-total">0</span></strong>
+            </div>
+            <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
+            <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-content">
+            <div class="checkout-header">
+                <h2>Checkout</h2>
+                <button class="close-checkout" onclick="closeCheckout()">×</button>
+            </div>
+            <form id="checkout-form" onsubmit="processOrder(event)">
+                <div class="form-section">
+                    <h3>Customer Details</h3>
+                    <div class="form-group">
+                        <label for="customer-name">Full Name *</label>
+                        <input type="text" id="customer-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-mobile">Mobile Number *</label>
+                        <input type="tel" id="customer-mobile" name="mobile" required pattern="[0-9]{10}">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-email">Email Address *</label>
+                        <input type="email" id="customer-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-address">Delivery Address *</label>
+                        <textarea id="customer-address" name="address" rows="4" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="cash" checked>
+                            <span>Cash on Delivery</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="upi">
+                            <span>UPI</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="card">
+                            <span>Card Payment</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="bank">
+                            <span>Bank Transfer</span>
+                        </label>
+                    </div>
+                    <div id="upi-qr-container" class="upi-qr-container" style="display: none;">
+                        <h4>Scan to Pay via UPI</h4>
+                        <div id="upi-qr-code" class="upi-qr-code"></div>
+                        <p class="upi-instruction">Scan this QR code with any UPI app to complete payment</p>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkout-items"></div>
+                    <div class="order-total">
+                        <strong>Total: ₹<span id="checkout-total">0</span></strong>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeCheckout()">Cancel</button>
+                    <button type="submit" class="place-order-btn">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sales Dashboard Modal -->
+    <div class="sales-modal" id="sales-modal">
+        <div class="sales-content">
+            <div class="sales-header">
+                <h2>Sales Dashboard</h2>
+                <button class="close-sales" onclick="closeSalesDashboard()">×</button>
+            </div>
+            <div class="sales-stats">
+                <div class="stat-card">
+                    <h3>Today's Sales</h3>
+                    <p class="stat-value">₹<span id="today-sales">0</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>This Month's Sales</h3>
+                    <p class="stat-value">₹<span id="monthly-sales">0</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p class="stat-value"><span id="total-orders">0</span></p>
+                </div>
+            </div>
+            <div class="sales-table-container">
+                <h3>Daily Sales Breakdown</h3>
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Orders</th>
+                            <th>Total Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-table-body">
+                        <!-- Sales data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="admin-sections">
+                <div id="orders-list-container" class="admin-section">
+                    <!-- Orders list will be populated here -->
+                </div>
+                <div id="customers-list-container" class="admin-section">
+                    <!-- Customers list will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Button (for viewing sales) -->
+    <button class="admin-btn" onclick="openSalesDashboard()" title="View Sales Dashboard">📊</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
